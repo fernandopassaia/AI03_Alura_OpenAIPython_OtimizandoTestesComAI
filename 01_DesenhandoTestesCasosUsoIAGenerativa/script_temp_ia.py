@@ -1,42 +1,34 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 import time
 
-# Configura o caminho do driver do Chromium
-chrome_driver_path = "Caminho_para_seu_driver_chromium"
+# Configurando o driver do Selenium
+selenium_service = Service("driver/chromedriver")
+driver = webdriver.Chrome(service=selenium_service)
 
-# Inicializa o serviço do driver
-service = Service(chrome_driver_path)
-service.start()
+# Abrindo o aplicativo AcordeLab
+driver.get("https://almsantana.github.io/")
 
-# Inicializa o navegador Chromium
-driver = webdriver.Chrome(service=service)
-
-# URL da plataforma AcordeLab
-url = "https://www.acordelab.com"
-
-# Abrir o aplicativo da plataforma AcordeLab
-driver.get(url)
-
-# Localizar e selecionar a opção "Login"
-login_button = driver.find_element(By.XPATH, "//button[text()='Login']")
-login_button.click()
-
-# Preencher o campo "E-mail" com o endereço de e-mail
-email_input = driver.find_element(By.NAME, "email")
-email_input.send_keys("ana@example.com")
-
-# Preencher o campo "Senha" com a senha de acesso
-password_input = driver.find_element(By.NAME, "password")
-password_input.send_keys("senha123")
-
-# Clicar no botão "Entrar" para realizar o login
-enter_button = driver.find_element(By.XPATH, "//button[text()='Entrar']")
-enter_button.click()
-
-# Aguardar a validação das informações e redirecionamento para a página inicial logada
 time.sleep(3)
 
-# Fechar o navegador após 3 segundos
+# Localizando o campo de login na tela inicial
+login_field = driver.find_element(By.ID, "email")
+
+# Inserindo o nome de usuário
+login_field.send_keys("email@acordelab.com.br")
+
+# Inserindo a senha
+password_field = driver.find_element(By.ID, "senha")
+password_field.send_keys("123senha")
+
+# Clicando no botão "Entrar"
+login_button = driver.find_element(By.CLASS_NAME, "botao-login")
+login_button.click()
+
+# Pausa de 3 segundos antes de fechar o script
+time.sleep(3)
+
+# Fechando o script
 driver.quit()
